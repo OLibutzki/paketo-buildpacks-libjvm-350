@@ -11,16 +11,22 @@ name: Build-Image
 on: workflow_dispatch
 
 jobs:
+  
   build:
 
     runs-on: ubuntu-latest
-
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        java: [ '17', '21' ]
+    
     steps:
     - uses: actions/checkout@v3
-    - name: Set up JDK 21
+    - name: Set up JDK ${{ matrix.java }}
       uses: actions/setup-java@v3
       with:
-        java-version: '21'
+        java-version: '${{ matrix.java }}'
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
